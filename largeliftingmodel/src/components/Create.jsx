@@ -16,10 +16,12 @@ function Create({
 	setWorkout,
 	user,
 }) {
+	// State Vars
 	const { error, isLoading, withLoader } = useLoader();
 	const [showOtherWorkoutType, setShowOtherWorkoutType] = useState(false);
 	const [showOtherEquipment, setShowOtherEquipment] = useState(false);
 
+	// Dropdown Menu Options
 	const difficultyOptions = [
 		{ value: "Easy", label: "Easy" },
 		{ value: "Medium", label: "Medium" },
@@ -43,41 +45,38 @@ function Create({
 		{ value: "Other", label: "Other" },
 	];
 
+	// Helper Functions
+	const findFirstNonBlankInputOrText = (id) => {
+		const root = document.getElementById(id);
+		if (!root) return "";
+
+		if (root.nodeType === Node.ELEMENT_NODE) {
+			if (root.value && root.value.trim() !== "") {
+				return root.value.trim();
+			}
+
+			if (root.innerText && root.innerText.trim() !== "") {
+				return root.innerText.trim();
+			}
+		}
+
+		if (root.children && root.children.length > 0) {
+			for (const child of root.children) {
+				const result = findFirstNonBlankInputOrText(child);
+				if (result && result.trim() !== "") {
+					return result;
+				}
+			}
+		}
+		return "";
+	};
+
 	const getOptionFromValue = (options, value) => {
 		const option = options.find((option) => option.value === value);
 		return option || { value, label: value };
 	};
 
 	const health_data = user.health_data;
-
-	useEffect(() => {
-		// Read state from local storage when the component mounts
-		const storedWorkout = localStorage.getItem("workout");
-		const storedWorkoutState = localStorage.getItem("workoutState");
-		const storedWorkoutExists = localStorage.getItem("workoutExists");
-
-		if (storedWorkout) {
-			setWorkout(JSON.parse(storedWorkout));
-		} else {
-			// Initialize with default values if not present in local storage
-			setWorkout({
-				length: "",
-				difficulty: difficultyOptions[0].value,
-				workout_type: workoutTypeOptions[0].value,
-				equipment_access: equipmentAccessOptions[0].value,
-				target_area: "",
-				included_exercises: "",
-				excluded_exercises: "",
-				other_workout_considerations: "",
-			});
-		}
-		if (storedWorkoutState && workoutState === undefined) {
-			setWorkoutState(JSON.parse(storedWorkoutState));
-		}
-		if (storedWorkoutExists) {
-			setWorkoutExists(JSON.parse(storedWorkoutExists));
-		}
-	}, []);
 
 	function getCreationWorkoutFromState() {
 		//:" + JSON.stringify(workout))
@@ -88,6 +87,11 @@ function Create({
 
 	const handleCreate = async () => {
 		// Validate required fields
+		const difficulty = findFirstNonBlankInputOrText("difficulty");
+		const workoutType = findFirstNonBlankInputOrText("workoutType");
+		const equipmentAccess = findFirstNonBlankInputOrText("equipmentAccess");
+		console.log(difficulty, workoutType, equipmentAccess);
+
 		if (
 			!workout.length ||
 			isNaN(Number(workout.length)) ||
@@ -96,15 +100,27 @@ function Create({
 			alert("Please provide a valid workout length in minutes.");
 			return;
 		}
-		if (!workout.difficulty) {
+		if (
+			difficulty === "" ||
+			difficulty === null ||
+			difficulty === undefined
+		) {
 			alert("Please select a difficulty level.");
 			return;
 		}
-		if (!workout.workout_type) {
+		if (
+			workoutType === "" ||
+			workoutType === null ||
+			workoutType === undefined
+		) {
 			alert("Please select a workout type.");
 			return;
 		}
-		if (!workout.equipment_access) {
+		if (
+			equipmentAccess === "" ||
+			equipmentAccess === null ||
+			equipmentAccess === undefined
+		) {
 			alert("Please specify equipment access.");
 			return;
 		}
@@ -167,6 +183,52 @@ function Create({
 		setWorkout({ ...workout, equipment_access: e.target.value });
 	};
 
+	useEffect(() => {
+		const defaultLength = 30;
+		const defaultDifficulty =
+			health_data?.workout_experience === "Expert"
+				? "Hard"
+				: health_data?.workout_experience === "Intermediate"
+				? "Medium"
+				: "Easy";
+		const defaultWorkoutType =
+			health_data.favourite_workout_type !== null ||
+			health_data?.favourite_workout_type !== undefined
+				? health_data.favourite_workout_type
+				: "Resistance Training";
+		const defaultEquipmentAccess = "No Equipment";
+
+		// Read state from local storage when the component mounts
+		const storedWorkout = JSON.parse(localStorage.getItem("workout"));
+		const storedWorkoutState = localStorage.getItem("workoutState");
+		const storedWorkoutExists = localStorage.getItem("workoutExists");
+
+		if (storedWorkout?.length === 0 || storedWorkout.length === "") {
+			setWorkout({ ...workout, length: defaultLength });
+		}
+		if (storedWorkout?.difficulty === 0 || storedWorkout.difficulty === "") {
+			setWorkout({ ...workout, difficulty: defaultDifficulty });
+		}
+		if (
+			storedWorkout?.workout_type === 0 ||
+			storedWorkout.workout_type === ""
+		) {
+			setWorkout({ ...workout, workout_type: defaultWorkoutType });
+		}
+		if (
+			storedWorkout?.equipment_access === 0 ||
+			storedWorkout.equipment_access === ""
+		) {
+			setWorkout({ ...workout, equipment_access: defaultEquipmentAccess });
+		}
+		if (storedWorkoutState && workoutState === undefined) {
+			setWorkoutState(JSON.parse(storedWorkoutState));
+		}
+		if (storedWorkoutExists) {
+			setWorkoutExists(JSON.parse(storedWorkoutExists));
+		}
+	});
+
 	return (
 		<>
 			<Loader error={error} isLoading={isLoading}>
@@ -190,6 +252,7 @@ function Create({
 							Select difficulty: <i style={{ opacity: 0.5 }}>required</i>
 						</label>
 						<Select
+							id={"difficulty"}
 							className={styles.dropdown}
 							options={difficultyOptions}
 							onChange={handleWorkoutDifficultyChange}
@@ -218,6 +281,7 @@ function Create({
 							<i style={{ opacity: 0.5 }}>required</i>
 						</label>
 						<Select
+							id={"workoutType"}
 							className={styles.dropdown}
 							placeholder="Select Workout Type..."
 							options={workoutTypeOptions}
@@ -261,6 +325,7 @@ function Create({
 							<i style={{ opacity: 0.5 }}>required</i>
 						</label>
 						<Select
+							id={"equipmentAccess"}
 							className={styles.dropdown}
 							placeholder="Select Equipment Access..."
 							options={equipmentAccessOptions}
