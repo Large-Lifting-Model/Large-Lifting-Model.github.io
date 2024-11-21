@@ -3,22 +3,26 @@
 	justify-content: space-between;
 	width: 95%;
 	max-width: var(--nav--max-width);
-	margin-top: 10px;
+	text-align: center;
 }
 
 .nav ul {
 	list-style: none;
 	display: flex;
 	gap: 2rem;
+	justify-content: center;
+	margin-top: 0.75rem;
 }
 
 .nav a:link,
 .nav a:visited {
+	padding: 0.5rem;
 	text-decoration: none;
 	color: var(--color-light--2);
 	text-transform: uppercase;
 	font-size: 1.5rem;
 	font-weight: 600;
+	margin-top: 0.25rem;
 }
 
 .nav button {
@@ -29,7 +33,7 @@
 	background-color: transparent;
 	border: none;
 	cursor: pointer;
-	padding-top: 0.25rem;
+	padding: 0.5rem;
 	font-weight: 600;
 }
 
@@ -46,35 +50,32 @@ a.ctaLink:visited {
 	border-radius: 7px;
 }
 
-/* button {
-	background-color: transparent;
-	border: none;
-	text-transform: uppercase;
-	cursor: pointer;
-	color: var(--color-light--2);
-} */
-
 @media (max-width: 660px) {
 	.nav {
 		flex-direction: column; /* Stack items vertically */
-		align-items: center; /* Align items to the left */
+		/* align-items: center; */
+		/* text-align: center; */
 		gap: 1rem;
 	}
 
 	.nav ul {
 		flex-direction: column; /* Stack list items vertically */
-		align-items: center;
+		/* align-items: center; */
 		/* width: 100%; Optional: make the list fill the full width */
-		text-align: center;
-		gap: 1rem; /* Reduce gap between items if necessary */
+		/* text-align: center; */
+		gap: 1rem;
 	}
 
 	.nav ul li {
-		width: 100%; /* Make each item take full width (optional) */
-		/* text-align: left; Align text to the left (optional) */
+		/* justify-content: center; */
+		text-align: center;
+		/* width: 100%; */
 	}
 
 	.nav a {
 		font-size: 1.2rem; /* Adjust font size for smaller screens if needed */
+	}
+	div a {
+		margin: 0 !important;
 	}
 }
