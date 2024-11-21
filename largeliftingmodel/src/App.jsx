@@ -19,6 +19,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AppAPI from "./components/AppAPI";
 import { useCallback, useEffect } from "react";
 import Logout from "./pages/Logout";
+import Success from "./pages/Success";
 // import { useEffect } from "react";
 // import { test } from "vitest";
 
@@ -196,6 +197,15 @@ function App() {
 								setWorkout={setWorkout}
 								user={user}
 							/>
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					exact
+					path="/success"
+					element={
+						<ProtectedRoute token={tokens.google}>
+							<Success />
 						</ProtectedRoute>
 					}
 				/>

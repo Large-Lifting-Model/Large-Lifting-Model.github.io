@@ -1,29 +1,26 @@
+import AppNav from "../components/AppNav";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import PageNav from "../components/PageNav";
 
-function Logout() {
+function Success() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		setTimeout(() => {
-			localStorage.clear();
-			navigate("/");
-			window.location.reload();
+			navigate("/home");
 		}, 1500);
 
 		return () => {
 			clearTimeout();
 		};
 	});
-
 	return (
 		<>
-			<PageNav />
+			<AppNav />
 			<div>
 				<h2>
 					{
-						"You've successfully logged out. Please wait while you are redirected."
+						"🥇 Congratulations on completing your workout! Please wait while you are redirected."
 					}
 				</h2>
 			</div>
@@ -31,4 +28,4 @@ function Logout() {
 	);
 }
 
-export default Logout;
+export default Success;

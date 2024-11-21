@@ -34,7 +34,7 @@ function Feedback({
 				setHowlong("");
 			});
 			setWorkoutState(0);
-			navigate("/home");
+			navigate("/success");
 		});
 	};
 
