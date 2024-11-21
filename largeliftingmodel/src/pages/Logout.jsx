@@ -5,8 +5,8 @@ function Logout() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		localStorage.clear();
 		setTimeout(() => {
-			localStorage.clear();
 			navigate("/");
 		}, 3000);
 

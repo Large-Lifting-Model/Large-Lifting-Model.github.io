@@ -73,7 +73,7 @@ class AppAPI {
 		user: "",
 		created: "",
 
-		length: 30,
+		length: "",
 		difficulty: "",
 		workout_type: "",
 		target_area: "",

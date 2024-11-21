@@ -184,6 +184,7 @@ function Create({
 	};
 
 	useEffect(() => {
+		console.log("useEffect Runs");
 		const defaultLength = 30;
 		const defaultDifficulty =
 			health_data?.workout_experience === "Expert"
@@ -199,35 +200,42 @@ function Create({
 		const defaultEquipmentAccess = "No Equipment";
 
 		// Read state from local storage when the component mounts
-		const storedWorkout = JSON.parse(localStorage.getItem("workout"));
-		const storedWorkoutState = localStorage.getItem("workoutState");
-		const storedWorkoutExists = localStorage.getItem("workoutExists");
+		// const storedWorkout = JSON.parse(localStorage.getItem("workout"));
+		// const storedWorkoutState = localStorage.getItem("workoutState");
+		// const storedWorkoutExists = localStorage.getItem("workoutExists");
 
-		if (storedWorkout?.length === 0 || storedWorkout.length === "") {
-			setWorkout({ ...workout, length: defaultLength });
+		// temp variables to obtain default workout
+		const tempWorkout =
+			workout?.length === 0 || workout.length === ""
+				? defaultLength
+				: workout.length;
+		const tempDifficulty =
+			workout?.difficulty === 0 || workout.difficulty === ""
+				? defaultDifficulty
+				: workout.difficulty;
+		const tempWorkoutType =
+			workout?.workout_type === 0 || workout.workout_type === ""
+				? defaultWorkoutType
+				: workout.workout_type;
+		const tempEquipmentAccess =
+			workout?.equipment_access === 0 || workout.equipment_access === ""
+				? defaultEquipmentAccess
+				: workout.equipment_access;
+
+		setWorkout({
+			...workout,
+			length: tempWorkout,
+			difficulty: tempDifficulty,
+			workout_type: tempWorkoutType,
+			equipment_access: tempEquipmentAccess,
+		});
+		if (workoutState && workoutState === undefined) {
+			setWorkoutState(JSON.parse(workoutState));
 		}
-		if (storedWorkout?.difficulty === 0 || storedWorkout.difficulty === "") {
-			setWorkout({ ...workout, difficulty: defaultDifficulty });
+		if (workoutExists) {
+			setWorkoutExists(JSON.parse(workoutExists));
 		}
-		if (
-			storedWorkout?.workout_type === 0 ||
-			storedWorkout.workout_type === ""
-		) {
-			setWorkout({ ...workout, workout_type: defaultWorkoutType });
-		}
-		if (
-			storedWorkout?.equipment_access === 0 ||
-			storedWorkout.equipment_access === ""
-		) {
-			setWorkout({ ...workout, equipment_access: defaultEquipmentAccess });
-		}
-		if (storedWorkoutState && workoutState === undefined) {
-			setWorkoutState(JSON.parse(storedWorkoutState));
-		}
-		if (storedWorkoutExists) {
-			setWorkoutExists(JSON.parse(storedWorkoutExists));
-		}
-	});
+	}, []);
 
 	return (
 		<>
