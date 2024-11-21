@@ -20,7 +20,7 @@ function Logout() {
 	return (
 		<>
 			<PageNav />
-			<div>
+			<div style={{ textAlign: "center", margin: "1rem" }}>
 				<h2>
 					{
 						"You've successfully logged out. Please wait while you are redirected."

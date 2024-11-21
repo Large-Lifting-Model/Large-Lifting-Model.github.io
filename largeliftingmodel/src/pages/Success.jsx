@@ -17,7 +17,7 @@ function Success() {
 	return (
 		<>
 			<AppNav />
-			<div>
+			<div style={{ textAlign: "center", margin: "1rem" }}>
 				<h2>
 					{
 						"🥇 Congratulations on completing your workout! Please wait while you are redirected."

@@ -34,3 +34,9 @@ p {
 	display: inline-block; /* Keep this if you prefer */
 	margin-bottom: 1rem; /* Adds space between links */
 }
+
+@media (max-width: 660px) {
+	.links {
+		gap: 1rem;
+	}
+}
