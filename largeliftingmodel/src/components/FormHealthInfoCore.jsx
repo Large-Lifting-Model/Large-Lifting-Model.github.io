@@ -45,6 +45,7 @@ const FormHealthInfoCore = ({ health_data, setHealthData }) => {
 				<input
 					type="date"
 					id="dob"
+					max={new Date().toISOString().split("T")[0]}
 					onChange={(e) => changeElement("dob", e.target.value)}
 					value={health_data.dob}
 				/>
@@ -64,6 +65,8 @@ const FormHealthInfoCore = ({ health_data, setHealthData }) => {
 				<input
 					id="height"
 					type="number"
+					min={0}
+					step={0.01}
 					onChange={(e) => changeElement("height", e.target.value)}
 					value={health_data.height}
 				/>
@@ -73,6 +76,8 @@ const FormHealthInfoCore = ({ health_data, setHealthData }) => {
 				<input
 					id="weight"
 					type="number"
+					min={0}
+					step={0.5}
 					onChange={(e) => changeElement("weight", e.target.value)}
 					value={health_data.weight}
 				/>
