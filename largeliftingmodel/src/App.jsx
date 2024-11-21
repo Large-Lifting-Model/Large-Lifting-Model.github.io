@@ -18,6 +18,7 @@ import HistoryDay from "./pages/HistoryDay";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AppAPI from "./components/AppAPI";
 import { useCallback, useEffect } from "react";
+import Logout from "./pages/Logout";
 // import { useEffect } from "react";
 // import { test } from "vitest";
 
@@ -150,11 +151,8 @@ function App() {
 	return (
 		<Routes>
 			{/* Public Routes */}
-			<Route
-				exact
-				path="/"
-				element={tokens.google ? <Navigate to="/home" /> : <Landing />}
-			/>
+			<Route exact path="/" element={<Landing />} />
+			<Route exact path="/logout" element={<Logout />} />
 			<Route
 				exact
 				path="login"
