@@ -21,6 +21,18 @@
 	font-weight: 600;
 }
 
+.nav button {
+	text-transform: uppercase;
+	text-decoration: none;
+	font-size: 1.5rem;
+	color: var(--color-light--2);
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	padding-top: 0.25rem;
+	font-weight: 600;
+}
+
 /* CSS Modules feature */
 .nav a:global(.active) {
 	color: var(--color-brand--2);
@@ -33,6 +45,14 @@ a.ctaLink:visited {
 	padding: 0.8rem 2rem;
 	border-radius: 7px;
 }
+
+/* button {
+	background-color: transparent;
+	border: none;
+	text-transform: uppercase;
+	cursor: pointer;
+	color: var(--color-light--2);
+} */
 
 @media (max-width: 660px) {
 	.nav {

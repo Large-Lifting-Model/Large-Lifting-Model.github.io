@@ -9,6 +9,7 @@ function Logout() {
 		setTimeout(() => {
 			localStorage.clear();
 			navigate("/");
+			window.location.reload();
 		}, 3000);
 
 		return () => {
@@ -22,10 +23,9 @@ function Logout() {
 			<div>
 				<h2>
 					{
-						"You've successfully logged out. Wait while you are redirected."
+						"You've successfully logged out. Please wait while you are redirected."
 					}
 				</h2>
-				;
 			</div>
 		</>
 	);

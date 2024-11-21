@@ -33,13 +33,12 @@ function AppNav() {
 					<NavLink to="/profile">Profile</NavLink>
 				</li>
 				<li>
-					<a
-						href="/"
+					<button
 						onClick={() => {
 							handleLogout();
 						}}>
 						Logout
-					</a>
+					</button>
 				</li>
 			</ul>
 		</nav>
