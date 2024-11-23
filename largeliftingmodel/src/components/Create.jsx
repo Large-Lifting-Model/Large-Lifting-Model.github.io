@@ -17,6 +17,7 @@ function Create({
 	user,
 }) {
 	// State Vars
+	const DEBOUNCE_TIME = 2000;
 	const { error, isLoading, withLoader } = useLoader();
 	const [showOtherWorkoutType, setShowOtherWorkoutType] = useState(false);
 	const [showOtherEquipment, setShowOtherEquipment] = useState(false);
@@ -90,7 +91,6 @@ function Create({
 		const difficulty = findFirstNonBlankInputOrText("difficulty");
 		const workoutType = findFirstNonBlankInputOrText("workoutType");
 		const equipmentAccess = findFirstNonBlankInputOrText("equipmentAccess");
-		console.log(difficulty, workoutType, equipmentAccess);
 
 		if (
 			!workout.length ||
@@ -153,38 +153,44 @@ function Create({
 	};
 
 	const handleWorkoutDifficultyChange = (selectedOption) => {
-		// setWorkoutDifficulty(selectedOption);
 		setWorkout({ ...workout, difficulty: selectedOption.value });
 	};
 
 	const handleWorkoutTypeChange = (selectedOption) => {
-		if (selectedOption.value === "other") {
+		if (selectedOption.value.toLowerCase() === "other") {
 			setShowOtherWorkoutType(true);
 		} else {
 			setShowOtherWorkoutType(false);
-			setWorkout({ ...workout, workout_type: selectedOption.value });
 		}
+		setWorkout({ ...workout, workout_type: selectedOption.value });
 	};
 
 	const handleEquipmentAccessChange = (selectedOption) => {
-		if (selectedOption.value === "other") {
+		if (selectedOption.value.toLowerCase() === "other") {
 			setShowOtherEquipment(true);
 		} else {
 			setShowOtherEquipment(false);
-			setWorkout({ ...workout, equipment_access: selectedOption.value });
 		}
+		setWorkout({ ...workout, equipment_access: selectedOption.value });
 	};
 
 	const handleOtherWorkoutTypeChange = (e) => {
-		setWorkout({ ...workout, workout_type: e.target.value });
+		const timer = setTimeout(() => {
+			setWorkout({ ...workout, workout_type: e.target.value });
+		}, DEBOUNCE_TIME);
+
+		return () => clearTimeout(timer);
 	};
 
 	const handleOtherEquipmentAccessChange = (e) => {
-		setWorkout({ ...workout, equipment_access: e.target.value });
+		const timer = setTimeout(() => {
+			setWorkout({ ...workout, equipment_access: e.target.value });
+		}, DEBOUNCE_TIME);
+
+		return () => clearTimeout(timer);
 	};
 
 	useEffect(() => {
-		console.log("useEffect Runs");
 		const defaultLength = 30;
 		const defaultDifficulty =
 			health_data?.workout_experience === "Expert"
@@ -196,7 +202,7 @@ function Create({
 			health_data.favourite_workout_type !== null ||
 			health_data?.favourite_workout_type !== undefined
 				? health_data.favourite_workout_type
-				: "Resistance Training";
+				: "Cardio";
 		const defaultEquipmentAccess = "No Equipment";
 
 		// Read state from local storage when the component mounts
@@ -322,7 +328,7 @@ function Create({
 							<input
 								id="otherWorkoutType"
 								type="text"
-								onChange={handleOtherWorkoutTypeChange}
+								onBlur={handleOtherWorkoutTypeChange}
 								disabled={workoutExists}
 							/>
 						</div>
@@ -360,8 +366,7 @@ function Create({
 							<input
 								id="otherEquipment"
 								type="text"
-								onChange={handleOtherEquipmentAccessChange}
-								value={workout.equipment_access || ""}
+								onBlur={handleOtherEquipmentAccessChange}
 								disabled={workoutExists}
 							/>
 						</div>
